@@ -1,4 +1,4 @@
-# templates
+# TEMPLATE PROJECT PREMISES
 This repository has some templates that I created
 
 Let's go!
