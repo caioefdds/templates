@@ -153,32 +153,26 @@ private $__html;
     public function CadastraUser($_dados) {
 
         $this->PDOClear();
+        
+        $this->PDOMontaBind($_dados['nome'], 'b_preco', 'nome');
+        $this->PDOMontaBind($_dados['id_perfil'], 'b_id_perfil', 'id_perfil');
+        $this->PDOMontaBind($_dados['email'], 'b_email', 'email');
+        $this->PDOMontaBind($_dados['senha'], 'b_senha', 'senha');
+        $this->PDOMontaBind($_dados['cpf'], 'b_cpf', 'cpf');
+        $this->PDOMontaBind($_dados['telefone'], 'b_telefone', 'telefone');
+        $this->PDOMontaBind($_dados['cep'], 'b_cep', 'cep');
+        $this->PDOMontaBind($_dados['data_mod'], 'b_data_mod', 'data_mod');
 
-        $this->_bind['b_nome']      = "{$_dados['nome']}";
-        $this->_bind['b_id_perfil'] = "{$_dados['id_perfil']}";
-        $this->_bind['b_email']     = "{$_dados['email']}";
-        $this->_bind['b_senha']     = "{$_dados['senha']}";
-        $this->_bind['b_cpf']       = "{$_dados['cpf']}";
-        $this->_bind['b_telefone']  = "{$_dados['telefone']}";
-        $this->_bind['b_cep']       = "{$_dados['cep']}";
-        $this->_bind['b_data_mod']  = "{$_dados['data_mod']}";
+        $this->_where = "SET " . implode(' , ', $this->_where);
 
 
         $_sql = "
                 INSERT INTO
                     tab_user
-                SET
-                nome = :b_nome,
-                id_perfil = :b_id_perfil,
-                email = :b_email,
-                senha = :b_senha,
-                cpf = :b_cpf,
-                telefone = :b_telefone,
-                cep = :b_cep,
-                data_mod = :b_data_mod;
-                ";
+                $this->_where
+                ;";
 
-        $_res = $this->Query_SQL($_sql, '', $_action = 'INSERT');
+        $_res = $this->Query_SQL($_sql, '', 'INSERT');
 
         return $_res;
 
@@ -435,19 +429,22 @@ private $__html;
      */
     public function InsertPDO($_dados, $_table, $_nokey = false)
     {
+
+        $this->PDOClear();
+
         foreach ($_dados as $key => $value) {
-            $set[] = "{$key} = :{$key}";
-            $_bind[$key] = $value;
+            $this->PDOMontaBind($value, "b_$key", $key);
         }
-        $set_final = implode(',', $set);
+        
+        $set_final = implode(' , ', $this->_where);
 
         $_sql = "
             INSERT INTO
                 {$_table}
             SET
-                {$set_final}";
+                {$set_final};";
 
-        return $this->Query_SQL($_sql, $_bind, 'INSERT');
+        return $this->Query_SQL($_sql, '', 'INSERT');
     }
 
     /**
@@ -533,6 +530,26 @@ private $__html;
         $_res = $this->Query_SQL($_sql, '', 'INSERT');
 
         return $_res;
+
+    }
+    
+    public function RemoveItem($_dados)
+    {
+        $this->PDOClear();
+        
+        if ($_dados['id'] <> '') {
+            $this->PDOMontaBind($_dados['id'], "b_id", 'id');
+        }
+            
+        $this->PDOMontaWhere();
+
+        $_sql = "
+          DELETE FROM
+            tab_carrinho
+          $this->_where
+          ;";
+
+        return $this->Query_SQL($_sql,'', 'DELETE');
 
     }
 }

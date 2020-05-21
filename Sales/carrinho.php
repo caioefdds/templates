@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta charset="utf-8">
     <title>Sales Site</title>
     <?php
     include 'construct.php';
@@ -12,7 +12,7 @@
 <body>
 
 <?php
-echo $_SESSION['id_user'];
+
     if($_SESSION['id_user'] <> '') {
         $where['id_user'] = $_SESSION['id_user'];
     } else if($_SESSION['id_avulso'] <> '') {
@@ -82,7 +82,7 @@ echo $_SESSION['id_user'];
             $__html->addHtml('td', array('colspan' => '3'), $cons_exe[$a]['descricao']),
             $__html->addHtml('td', array('class' => 'text-center'), $__html->addHtml('input', array('type' => 'number', 'min' => '0','class' => 'form-input-sm', 'onchange' => "AlteraPreco($a, {$cons_exe[$a]['id']}, {$_SESSION['id_user']})",'step' => '1', 'id' => 'unidades_'.$a, 'name' => 'unidades_'.$a, 'value' => "{$cons_exe[$a]['unidades']}"), '')),
             $__html->addHtml('td', array('class' => 'text-center text-monospace', 'id' => "soma_".$a, 'name' => "soma_".$a, 'data-preco_'.$a => "{$cons_exe[$a]['preco']}"), $cons_exe[$a]['soma']),
-            $__html->addHtml('td', array('class' => 'text-center'), $__html->addHtml('i', array('class' => 'fas fa-times-circle text-danger hover_cursor'),'')),
+            $__html->addHtml('td', array('class' => 'text-center'), $__html->addHtml('i', array('class' => 'fas fa-times-circle text-danger hover_cursor', 'onclick' => "RemoveItem({$cons_exe[$a]['id']})"),'')),
         ));
         $a++;
     }

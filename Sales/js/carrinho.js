@@ -22,7 +22,6 @@ function AlteraPreco(id, id_carrinho, id_user){
         ajax2.id_user = id_user;
         var result2 = ChamaAjax(ajax2, funcao1);
         result2.done(function (opa2) {
-            console.log(opa2);
             var resultado = JSON.parse(opa2);
             $.each(resultado, function (i, item) {
                 $('#soma_'+id).text((resultado[id]['soma']).toFixed(2));
@@ -50,4 +49,26 @@ function ConsultaAPI() {
             $("#formulario").submit();
         }
     });
+}
+
+function RemoveItem(id) {
+
+    var dados = {};
+    var funcao = 'classes/class.ajax.php?Ajax=RemoveItem';
+
+
+    dados.id = id;
+
+    var result = ChamaAjax(dados, funcao);
+
+    result.done( function(opa) {
+    Swal.fire(
+      'Removido!',
+      'Seu item foi removido do carrinho.',
+      'success'
+    ).then((value) => {
+       window.location.href = 'carrinho.php';
+    });
+  });
+
 }

@@ -24,6 +24,11 @@
         $retorno = $__cons->ConsultaCarrinho($_POST);
 
         echo json_encode((object)$retorno);
+    } else if($funcao == 'RemoveItem') {
+
+        $retorno = $__cons->RemoveItem($_POST);
+
+        echo json_encode((object)$retorno);
     } else if($funcao == 'AdicionaCarrinho') {
 
 //        print_r($_POST);
